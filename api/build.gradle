@@ -27,4 +27,14 @@ swaggerSources {
             ]
         }
     }
+
+    frontend {
+        code {
+            inputFile = file('src/main/resources/api.yml')
+            language = 'typescript-angular'
+            additionalProperties = [
+                    'npmName': 'people-finder-frontend',
+            ]
+        }
+    }
 }
