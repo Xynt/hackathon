@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: People Finder
+  description: This is the API for the our People Finder application
+  version: 1.0.0
+  contact:
+    email: our-fancy-team@zuehlke.com
+paths:
+  /people:
+    get:
+      tags:
+        - people
+      operationId: getPeople
+      summary: Get all people
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Person'
+  /skills:
+    get:
+      tags:
+        - skills
+      operationId: getSkills
+      summary: Get all skills
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Skill'
+  /teams:
+    post:
+      tags:
+        - teams
+      operationId: calculateTeams
+      summary: Calculate all teams
+      requestBody:
+        description: Our team
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Team"
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Skill'
+components:
+  schemas:
+    Person:
+      properties:
+        firstName:
+          type: string
+          description: The first name
+          example: John
+          maxLength: 64
+        lastName:
+          type: string
+          description: The last name
+          example: Watson
+          maxLength: 64
+      required:
+        - firstName
+        - lastName
+    Skill:
+      properties:
+        name:
+          type: string
+          description: The skill name
+          example: Angular
+          maxLength: 64
+      required:
+        - name
+    Proficiency:
+      properties:
+        rating:
+          type: integer
+          description: The rating
+          minimum: 1
+          maximum: 5
+        skill:
+          $ref: '#/components/schemas/Skill'
+      required:
+        - rating
+        - skill
+    Criteria:
+      properties:
+        proficiencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Proficiency'
+      required:
+        - proficiencies
+    Team:
+      properties:
+        name:
+          type: string
+          description: The team name
+          example: Fancy team name
+          maxLength: 64
+        members:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              criteria:
+                $ref: '#/components/schemas/Criteria'
