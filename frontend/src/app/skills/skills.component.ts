@@ -13,7 +13,6 @@ export class SkillsComponent implements OnInit {
   skillControl: FormControl = new FormControl();
   skills: Skill[] = [{name: "Spring"}, {name: "CSS"}, {name: "HTML"}];
   displayedColumns: string[] = ["name"];
-  skillNameInput: string = "";
   suggestions: Skill[] = [{name: "Spring"}, {name: "CSS"}, {name: "HTML"}, {name: "Angular"}, {name: "DOTNET"}, {name: "Test"}]
 
   filteredSuggestions!: Observable<Skill[]>;
@@ -28,9 +27,9 @@ export class SkillsComponent implements OnInit {
     );
   }
 
-  addSkill(skillName: string): void {
-    this.skills.push({name: skillName});
-    this.skillNameInput = "";
+  addSkill(): void {
+    this.skills.push({name: this.skillControl.value});
+    this.skillControl.setValue("");
     this.table.renderRows();
   }
 

@@ -7,13 +7,13 @@
                [matAutocomplete]="skillName"
                [formControl]="skillControl">
         <mat-autocomplete #skillName="matAutocomplete">
-          <mat-option *ngFor="let option of filteredSuggestions | async" [value]="option">
-            {{ option.name}}
+          <mat-option *ngFor="let option of filteredSuggestions | async" [value]="option.name">
+            {{ option.name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </form>
-    <button mat-flat-button color="accent" class="input-button" (click)="addSkill(skillNameInput)">
+    <button mat-flat-button color="accent" class="input-button" (click)="addSkill()">
       <mat-icon>add</mat-icon>
     </button>
   </div>
