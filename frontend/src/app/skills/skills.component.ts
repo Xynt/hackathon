@@ -35,7 +35,6 @@ export class SkillsComponent implements OnInit {
 
   _filter(value: string): Skill[] {
     const filterValue = value.toLowerCase();
-    console.log("AYYY FONSI")
 
     return this.suggestions.filter((option => option.name.toLowerCase().includes(filterValue))).splice(0, 5);
   }
