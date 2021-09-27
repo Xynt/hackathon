@@ -5,10 +5,18 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SkillsComponent } from './skills/skills.component';
+import { PersonsComponent } from './persons/persons.component';
+import { ConfigComponent } from './config/config.component';
+import { ResultComponent } from './result/result.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SkillsComponent,
+    PersonsComponent,
+    ConfigComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule,
