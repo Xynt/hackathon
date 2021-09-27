@@ -3,8 +3,14 @@
     <form>
       <mat-form-field class="input-field-box" appearance="fill">
         <mat-label>Skill name</mat-label>
-        <input matInput placeholder="Angular, Spring, Scrum..." autocomplete="off" class="input-field" [ngModelOptions]="{standalone: true}"
-               [(ngModel)]="skillNameInput">
+        <input matInput placeholder="Angular, Spring, Scrum..." autocomplete="off" class="input-field"
+               [matAutocomplete]="skillName"
+               [formControl]="skillControl">
+        <mat-autocomplete #skillName="matAutocomplete">
+          <mat-option *ngFor="let option of filteredSuggestions | async" [value]="option">
+            {{ option.name}}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
     </form>
     <button mat-flat-button color="accent" class="input-button" (click)="addSkill(skillNameInput)">
