@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'org.hidetake.swagger.generator' version '2.18.2'
+}
+
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    swaggerCodegen 'org.openapitools:openapi-generator-cli:5.2.1'
+}
+
+swaggerSources {
+    peopleFinder {
+        code {
+            inputFile = file('src/main/resources/api.yml')
+            language = 'spring'
+            additionalProperties = [
+                interfaceOnly: true,
+                apiPackage: 'com.zuehlke.hackathon.people-finder.api',
+                modelPackage: 'com.zuehlke.hackathon.people-finder.model',
+                artifactId: 'people-finder-api',
+                groupId: 'com.zuehlke.hackathon.people-finder'
+            ]
+        }
+    }
+}
