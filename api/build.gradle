@@ -1,6 +1,8 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 plugins {
     id 'java'
-    id 'org.hidetake.swagger.generator' version '2.18.2'
+    id 'org.openapi.generator' version "${openapiGeneratorVersion}"
 }
 
 version '1.0.0'
@@ -10,31 +12,36 @@ repositories {
 }
 
 dependencies {
-    swaggerCodegen 'org.openapitools:openapi-generator-cli:5.2.1'
+    implementation "org.openapitools:openapi-generator-gradle-plugin:${openapiGeneratorVersion}"
 }
 
-swaggerSources {
-    peopleFinder {
-        code {
-            inputFile = file('src/main/resources/api.yml')
-            language = 'spring'
-            additionalProperties = [
-                interfaceOnly: true,
-                apiPackage: 'com.zuehlke.hackathon.people-finder.api',
-                modelPackage: 'com.zuehlke.hackathon.people-finder.model',
-                artifactId: 'people-finder-api',
-                groupId: 'com.zuehlke.hackathon.people-finder'
-            ]
-        }
-    }
+task generateBeApi(type: GenerateTask) {
+    inputSpec = "${projectDir}/src/main/resources/api.yml"
+    generatorName = 'spring'
+    apiPackage = 'com.zuehlke.hackathon.peoplefinder.api'
+    modelPackage = 'com.zuehlke.hackathon.peoplefinder.model'
+    outputDir = "${buildDir}/be"
+    apiFilesConstrainedTo = [""]
+    modelFilesConstrainedTo = [""]
+    supportingFilesConstrainedTo = ["pom.xml"]
+    additionalProperties = [
+        artifactId: 'peoplefinder-api',
+        groupId: 'com.zuehlke.hackathon.peoplefinder',
+        interfaceOnly: true,
+        skipDefaultInterface: true
+    ]
+}
 
-    frontend {
-        code {
-            inputFile = file('src/main/resources/api.yml')
-            language = 'typescript-angular'
-            additionalProperties = [
-                    'npmName': 'people-finder-frontend',
-            ]
-        }
-    }
+task generateFeApi(type: GenerateTask) {
+    inputSpec = "${projectDir}/src/main/resources/api.yml"
+    generatorName = 'typescript-angular'
+    outputDir = "${buildDir}/fe"
+    additionalProperties = [
+        'npmName': 'peoplefinder-frontend',
+        'serviceSuffix': 'ServiceApi'
+    ]
+}
+
+task prepareApis() {
+    dependsOn generateBeApi, generateFeApi
 }
