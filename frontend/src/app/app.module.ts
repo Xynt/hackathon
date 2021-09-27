@@ -9,6 +9,9 @@ import { SkillsComponent } from './skills/skills.component';
 import { PersonsComponent } from './persons/persons.component';
 import { ConfigComponent } from './config/config.component';
 import { ResultComponent } from './result/result.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { ResultComponent } from './result/result.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
