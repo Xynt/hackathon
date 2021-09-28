@@ -11,4 +11,10 @@ export class PageNavigatorButtonsComponent {
 
   @Input()
   showRight: boolean = true;
+
+  @Input()
+  leftClickUrl = "";
+
+  @Input()
+  rightClickUrl = "";
 }
