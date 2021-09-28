@@ -61,11 +61,17 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Skill'
+                  $ref: '#/components/schemas/Team'
 components:
   schemas:
     Person:
       properties:
+        code:
+          type: string
+          description: The abbreviation
+          example: asdf
+          minLength: 3
+          maxLength: 4
         firstName:
           type: string
           description: The first name
