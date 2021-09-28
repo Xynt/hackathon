@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {FormControl, ValidatorFn, Validators} from "@angular/forms";
 import {existsValidator} from "../service/directive/exists.directive";
@@ -6,13 +6,14 @@ import {Observable} from "rxjs";
 import {notExistsValidator} from "../service/directive/not-exists.directive";
 import {Person} from "../../../peoplefinder-api/model/person";
 import {Skill} from "../../../peoplefinder-api/model/skill";
+import {map, startWith} from "rxjs/operators";
 
 @Component({
   selector: 'app-persons',
   templateUrl: './persons.component.html',
   styleUrls: ['./persons.component.scss']
 })
-export class PersonsComponent {
+export class PersonsComponent implements OnInit {
 
   persons: Person[] = [
     {
@@ -28,7 +29,7 @@ export class PersonsComponent {
   ]
   displayedColumns: string[] = ["code", "firstname", "lastname"];
 
-  filteredSuggestions!: Observable<Skill[]>;
+  filteredSuggestions!: Observable<Person[]>;
   allPersons: Person[] = [
     {
       code: "stde",
@@ -52,8 +53,8 @@ export class PersonsComponent {
     },
     {
       code: "anko",
-      firstName: "Konrad",
-      lastName: "Andres"
+      firstName: "Andres",
+      lastName: "Konrad"
     },
   ]
 
@@ -72,6 +73,27 @@ export class PersonsComponent {
     } catch (e) {
       this.router.navigate(["/skills"]);
     }
+  }
+
+  ngOnInit(): void {
+    this.filteredSuggestions = this.personControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+
+  _filter(value: string): Person[] {
+    if (!value) {
+      value = "";
+    }
+
+    const filterValue = value.toLowerCase();
+
+    let existingValuesRemovedSuggestions = this.allPersons.filter(option => !this.persons.map(person => person.code).includes(option.code))
+    let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => option.code.toLowerCase().includes(filterValue));
+    return searchFilteredSuggestions.splice(0, 5);
   }
 
 }
