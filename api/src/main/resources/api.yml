@@ -83,6 +83,7 @@ components:
           example: Watson
           maxLength: 64
       required:
+        - code
         - firstName
         - lastName
     Skill:
