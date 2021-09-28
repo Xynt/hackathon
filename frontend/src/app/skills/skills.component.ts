@@ -6,6 +6,7 @@ import {map, startWith} from "rxjs/operators";
 import {existsValidator} from "../service/directive/exists.directive";
 import {notExistsValidator} from "../service/directive/not-exists.directive";
 import {Router} from "@angular/router";
+import {Skill} from "../../../peoplefinder-api/model/skill";
 
 @Component({
   selector: 'app-skills',
@@ -71,8 +72,4 @@ export class SkillsComponent implements OnInit {
     let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => option.name.toLowerCase().includes(filterValue));
     return searchFilteredSuggestions.splice(0, 5);
   }
-}
-
-export interface Skill {
-  name: string;
 }

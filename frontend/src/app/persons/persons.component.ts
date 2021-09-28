@@ -1,6 +1,11 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {Skill} from "../skills/skills.component";
+import {FormControl, ValidatorFn, Validators} from "@angular/forms";
+import {existsValidator} from "../service/directive/exists.directive";
+import {Observable} from "rxjs";
+import {notExistsValidator} from "../service/directive/not-exists.directive";
+import {Person} from "../../../peoplefinder-api/model/person";
+import {Skill} from "../../../peoplefinder-api/model/skill";
 
 @Component({
   selector: 'app-persons',
@@ -9,6 +14,56 @@ import {Skill} from "../skills/skills.component";
 })
 export class PersonsComponent {
 
+  persons: Person[] = [
+    {
+      code: "stde",
+      firstName: "Stefan",
+      lastName: "Derungs"
+    },
+    {
+      code: "xaro",
+      firstName: "Xabier",
+      lastName: "Rodriguez"
+    },
+  ]
+  displayedColumns: string[] = ["code", "firstname", "lastname"];
+
+  filteredSuggestions!: Observable<Skill[]>;
+  allPersons: Person[] = [
+    {
+      code: "stde",
+      firstName: "Stefan",
+      lastName: "Derungs"
+    },
+    {
+      code: "xaro",
+      firstName: "Xabier",
+      lastName: "Rodriguez"
+    },
+    {
+      code: "lybo",
+      firstName: "Lyndsey",
+      lastName: "Bonelli"
+    },
+    {
+      code: "davo",
+      firstName: "Davide",
+      lastName: "Vanoni"
+    },
+    {
+      code: "anko",
+      firstName: "Konrad",
+      lastName: "Andres"
+    },
+  ]
+
+  notExistsValidator: ValidatorFn = notExistsValidator(this.persons.map(person => person.code));
+
+  personControl: FormControl = new FormControl("", [
+    Validators.required,
+    existsValidator(this.allPersons.map(person => person.code)),
+    this.notExistsValidator
+  ]);
   skills: Skill[] = [];
 
   constructor(private router: Router) {

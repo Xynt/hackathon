@@ -1,3 +1,49 @@
-<p>persons works!</p>
-<br>
-{{ skills }}
+<div class="skill-content">
+  <div class="add-header">
+    <form>
+      <mat-form-field class="input-field-box" appearance="fill">
+        <mat-label>Skill name</mat-label>
+        <input matInput placeholder="Search for any name..." autocomplete="off" class="input-field"
+               [matAutocomplete]="personName"
+               [formControl]="personControl">
+        <mat-error *ngIf="personControl.hasError('required')">
+          Person may not be empty
+        </mat-error>
+        <mat-error *ngIf="personControl.hasError('notExists')">
+          Custom values are not permitted
+        </mat-error>
+        <mat-error *ngIf="personControl.hasError('exists')">
+          Person is already added
+        </mat-error>
+        <mat-autocomplete #personName="matAutocomplete">
+          <mat-option *ngFor="let option of filteredSuggestions | async" [value]="option.name">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    <button mat-flat-button color="accent" class="input-button">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="persons">
+    <ng-container matColumnDef="code">
+      <th mat-header-cell *matHeaderCellDef> Code </th>
+      <td mat-cell *matCellDef="let person"> {{person.code}} </td>
+    </ng-container>
+    <ng-container matColumnDef="firstname">
+      <th mat-header-cell *matHeaderCellDef> Firstname </th>
+      <td mat-cell *matCellDef="let person"> {{person.firstName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef> Lastname </th>
+      <td mat-cell *matCellDef="let person"> {{person.lastName}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <app-page-navigator-buttons></app-page-navigator-buttons>
+</div>
+
