@@ -8,6 +8,7 @@ import {notExistsValidator} from "../service/directive/not-exists.directive";
 import {Router} from "@angular/router";
 import {Skill} from "../../../peoplefinder-api/model/skill";
 import {Person} from "../../../peoplefinder-api/model/person";
+import {SkillsServiceApi} from "../../../peoplefinder-api/api/skills.service";
 
 @Component({
   selector: 'app-skills',
@@ -18,21 +19,17 @@ export class SkillsComponent implements OnInit {
   persons: Person[] = []
   skills: Skill[] = [];
   displayedColumns: string[] = ["name"];
-  suggestions: Skill[] = [{name: "Spring"}, {name: "CSS"}, {name: "HTML"}, {name: "Angular"}, {name: "DOTNET"}, {name: "Test"}]
+  allSkills: Skill[] = [];
 
   notExistsValidator: ValidatorFn = notExistsValidator(this.skills.map(skill => skill.name));
 
-  skillControl: FormControl = new FormControl("", [
-    Validators.required,
-    existsValidator(this.suggestions.map(skill => skill.name)),
-    this.notExistsValidator
-  ]);
+  skillControl: FormControl = new FormControl("", []);
 
   filteredSuggestions!: Observable<Skill[]>;
 
   @ViewChild(MatTable) table!: MatTable<Skill>;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private skillsServiceApi: SkillsServiceApi) {
     try {
       this.skills = router.getCurrentNavigation()!.extras.state!.selectedSkills;
       this.persons = router.getCurrentNavigation()!.extras.state!.selectedPersons;
@@ -41,11 +38,19 @@ export class SkillsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.skillsServiceApi.getSkills().subscribe(allSkills => {
+      this.allSkills = allSkills;
+      this.skillControl.addValidators([
+        Validators.required,
+        existsValidator(this.allSkills.map(skill => skill.name)),
+        this.notExistsValidator
+      ])
+    });
     this.filteredSuggestions = this.skillControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
   }
 
   addSkill(): void {
@@ -75,7 +80,7 @@ export class SkillsComponent implements OnInit {
 
     const filterValue = value.toLowerCase();
 
-    let existingValuesRemovedSuggestions = this.suggestions.filter(option => !this.skills.map(skill => skill.name).includes(option.name))
+    let existingValuesRemovedSuggestions = this.allSkills.filter(option => !this.skills.map(skill => skill.name).includes(option.name))
     let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => option.name.toLowerCase().includes(filterValue));
     return searchFilteredSuggestions.splice(0, 5);
   }
