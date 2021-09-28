@@ -1,4 +1,5 @@
 <div class="content">
-  <button class="left-button" mat-flat-button color="accent"><mat-icon>chevron_left</mat-icon></button>
-  <button class="right-button" mat-flat-button color="accent"><mat-icon>chevron_right</mat-icon></button>
+  <button *ngIf="showLeft" class="left-button" mat-flat-button color="accent"><mat-icon>chevron_left</mat-icon></button>
+  <div class="flex-filler"></div>
+  <button *ngIf="showRight" class="right-button" mat-flat-button color="accent"><mat-icon>chevron_right</mat-icon></button>
 </div>

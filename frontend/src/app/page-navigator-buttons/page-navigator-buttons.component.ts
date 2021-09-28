@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-page-navigator-buttons',
   templateUrl: './page-navigator-buttons.component.html',
   styleUrls: ['./page-navigator-buttons.component.scss']
 })
-export class PageNavigatorButtonsComponent implements OnInit {
+export class PageNavigatorButtonsComponent {
+  @Input()
+  showLeft: boolean = true;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  @Input()
+  showRight: boolean = true;
 }

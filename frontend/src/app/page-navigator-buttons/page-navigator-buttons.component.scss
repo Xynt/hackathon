@@ -3,3 +3,11 @@
   width: 394px;
   justify-content: space-between;
 }
+
+button {
+  flex: 0 0 0;
+}
+
+.flex-filler {
+  flex: 1 1 0;
+}
