@@ -59,7 +59,9 @@ export class SkillsComponent implements OnInit {
 
     const filterValue = value.toLowerCase();
 
-    return this.suggestions.filter((option => option.name.toLowerCase().includes(filterValue))).splice(0, 5);
+    let existingValuesRemovedSuggestions = this.suggestions.filter(option => !this.skills.map(skill => skill.name).includes(option.name))
+    let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => option.name.toLowerCase().includes(filterValue));
+    return searchFilteredSuggestions.splice(0, 5);
   }
 }
 
