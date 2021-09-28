@@ -48,7 +48,6 @@ public class InsightClientConfiguration {
 
     private Feign.Builder getClientBuilder(InsightLogin insightLogin) {
         return Feign.builder()
-                .contract(new SpringMvcContract())
                 .requestInterceptor(new BasicAuthRequestInterceptor(insightLogin.getUsername(), insightLogin.getPassword()))
                 .decoder(new GsonDecoder());
     }

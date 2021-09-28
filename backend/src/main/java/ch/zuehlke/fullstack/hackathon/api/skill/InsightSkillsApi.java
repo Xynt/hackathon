@@ -1,14 +1,10 @@
 package ch.zuehlke.fullstack.hackathon.api.skill;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import feign.RequestLine;
 
-@RequestMapping("skills")
 public interface InsightSkillsApi {
 
-    @GetMapping()
-    @ResponseBody
-    InsightSkills getSkills();
+    @RequestLine("GET /skills")
+    InsightSkills getInsightSkills();
 
 }
