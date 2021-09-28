@@ -40,6 +40,13 @@ paths:
         - teams
       operationId: calculateTeams
       summary: Calculate all teams
+      parameters:
+        - in: query
+          name: dimension
+          example: 3
+          schema:
+            type: integer
+          description: The number of members for the team
       requestBody:
         description: Our team
         content:
@@ -111,7 +118,4 @@ components:
         members:
           type: object
           additionalProperties:
-            type: object
-            properties:
-              criteria:
-                $ref: '#/components/schemas/Criteria'
+            $ref: '#/components/schemas/Criteria'
