@@ -64,6 +64,7 @@ task copyFeApi(dependsOn: generateFeApi) {
         copy {
             from "${buildDir}/fe/api"
             into "${rootDir}/frontend/peoplefinder-api/api"
+            filter { line -> line.replaceAll('localVarHeaders: localVarHeaders,', '') }
         }
         copy {
             from "${buildDir}/fe/model"
