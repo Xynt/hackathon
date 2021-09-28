@@ -1,6 +1,7 @@
 package ch.zuehlke.fullstack.hackathon.api;
 
 import ch.zuehlke.fullstack.hackathon.api.employee.InsightEmployeesApi;
+import ch.zuehlke.fullstack.hackathon.api.skill.InsightSkillsApi;
 import feign.Feign;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.gson.GsonDecoder;
@@ -40,6 +41,17 @@ public class InsightConfiguration {
                 // TODO replace with jackson
                 .decoder(new GsonDecoder())
                 .target(InsightEmployeesApi.class, insightApiUrl);
+    }
+
+    @Bean
+    @Autowired
+    public InsightSkillsApi getInsightSkillsApi(InsightLogin insightLogin) {
+        return Feign.builder()
+                .contract(new SpringMvcContract())
+                .requestInterceptor(new BasicAuthRequestInterceptor(insightLogin.getUsername(), insightLogin.getPassword()))
+                // TODO replace with jackson
+                .decoder(new GsonDecoder())
+                .target(InsightSkillsApi.class, insightApiUrl);
     }
 
 }
