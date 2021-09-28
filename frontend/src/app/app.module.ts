@@ -16,6 +16,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatTableModule} from "@angular/material/table";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { ExistsDirective } from './service/directive/exists.directive';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     SkillsComponent,
     PersonsComponent,
     ConfigComponent,
-    ResultComponent
+    ResultComponent,
+    ExistsDirective
   ],
   imports: [
     BrowserModule,
