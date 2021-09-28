@@ -12,9 +12,9 @@ public class PeopleService {
     public List<Person> getPeople() {
         // TODO: Insight API call
         return Arrays.asList(
-                new Person().firstName("Lyndsey").lastName("Bonelli"),
-                new Person().firstName("Xabier").lastName("Rodriguez"),
-                new Person().firstName("Davide").lastName("Vanoni")
+                new Person().firstName("Lyndsey").lastName("Bonelli").code("lybo"),
+                new Person().firstName("Xabier").lastName("Rodriguez").code("xaro"),
+                new Person().firstName("Davide").lastName("Vanoni").code("dava")
         );
     }
 }

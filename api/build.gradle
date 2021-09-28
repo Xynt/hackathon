@@ -37,19 +37,9 @@ task generateBeApi(type: GenerateTask) {
 
 task workarounds(dependsOn: generateBeApi) {
     doLast {
-        def file = null
-        def content = null
-
-        // Use Person as a key in the map instead String. Open API Generator supports only String as key
-        file = "${buildDir}/be/src/main/java/com/zuehlke/hackathon/peoplefinder/model/Team.java"
-        content = FileUtils.readFileToString(new File(file), Charset.defaultCharset())
-                .replaceAll('Map<String, Criteria>', 'Map<Person, Criteria>')
-                .replaceAll('String key', 'Person key')
-        FileUtils.writeStringToFile new File(file), content, Charset.defaultCharset()
-
         // Use Java version 11 instead 8. Open API Generator seems to not provide a clean parameter
-        file = "${buildDir}/be/pom.xml"
-        content = FileUtils.readFileToString(new File(file), Charset.defaultCharset())
+        def file = "${buildDir}/be/pom.xml"
+        def content = FileUtils.readFileToString(new File(file), Charset.defaultCharset())
                 .replaceAll('<java.version>1.8</java.version>', '<java.version>11</java.version>')
         FileUtils.writeStringToFile new File(file), content, Charset.defaultCharset()
     }
