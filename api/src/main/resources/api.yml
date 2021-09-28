@@ -61,7 +61,7 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Skill'
+                  $ref: '#/components/schemas/Team'
 components:
   schemas:
     Person:

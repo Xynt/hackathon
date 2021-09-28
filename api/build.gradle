@@ -37,8 +37,8 @@ task generateBeApi(type: GenerateTask) {
 
 task workarounds(dependsOn: generateBeApi) {
     doLast {
-        file = null
-        content = null
+        def file = null
+        def content = null
 
         // Use Person as a key in the map instead String. Open API Generator supports only String as key
         file = "${buildDir}/be/src/main/java/com/zuehlke/hackathon/peoplefinder/model/Team.java"
