@@ -12,6 +12,9 @@
         <mat-error *ngIf="skillControl.hasError('notExists')">
           Custom values are not permitted
         </mat-error>
+        <mat-error *ngIf="skillControl.hasError('exists')">
+          Value is already selected
+        </mat-error>
         <mat-autocomplete #skillName="matAutocomplete">
           <mat-option *ngFor="let option of filteredSuggestions | async" [value]="option.name">
             {{ option.name }}

@@ -17,6 +17,7 @@ import {MatTableModule} from "@angular/material/table";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ExistsDirective } from './service/directive/exists.directive';
+import { NotExistsDirective } from './service/directive/not-exists.directive';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ExistsDirective } from './service/directive/exists.directive';
     PersonsComponent,
     ConfigComponent,
     ResultComponent,
-    ExistsDirective
+    ExistsDirective,
+    NotExistsDirective
   ],
   imports: [
     BrowserModule,

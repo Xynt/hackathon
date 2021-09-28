@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {FormControl, Validators} from "@angular/forms";
 import {map, startWith} from "rxjs/operators";
 import {existsValidator} from "../service/directive/exists.directive";
+import {notExistsValidator} from "../service/directive/not-exists.directive";
 
 @Component({
   selector: 'app-skills',
@@ -14,7 +15,11 @@ export class SkillsComponent implements OnInit {
   skills: Skill[] = [{name: "Spring"}, {name: "CSS"}, {name: "HTML"}];
   displayedColumns: string[] = ["name"];
   suggestions: Skill[] = [{name: "Spring"}, {name: "CSS"}, {name: "HTML"}, {name: "Angular"}, {name: "DOTNET"}, {name: "Test"}]
-  skillControl: FormControl = new FormControl("", [Validators.required, existsValidator(this.suggestions.map(skill => skill.name))]);
+  skillControl: FormControl = new FormControl("", [
+    Validators.required,
+    existsValidator(this.suggestions.map(skill => skill.name)),
+    notExistsValidator(this.skills.map(skill => skill.name))
+  ]);
 
   filteredSuggestions!: Observable<Skill[]>;
 
