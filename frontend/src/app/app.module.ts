@@ -18,6 +18,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ExistsDirective } from './service/directive/exists.directive';
 import { NotExistsDirective } from './service/directive/not-exists.directive';
+import { PageNavigatorButtonsComponent } from './page-navigator-buttons/page-navigator-buttons.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NotExistsDirective } from './service/directive/not-exists.directive';
     ConfigComponent,
     ResultComponent,
     ExistsDirective,
-    NotExistsDirective
+    NotExistsDirective,
+    PageNavigatorButtonsComponent
   ],
   imports: [
     BrowserModule,
