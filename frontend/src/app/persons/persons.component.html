@@ -44,6 +44,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <app-page-navigator-buttons></app-page-navigator-buttons>
+  <app-page-navigator-buttons (onLeftClick)="navigateBack()"></app-page-navigator-buttons>
 </div>
 

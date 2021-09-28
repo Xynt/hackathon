@@ -16,18 +16,7 @@ import {MatTable} from "@angular/material/table";
 })
 export class PersonsComponent implements OnInit {
 
-  persons: Person[] = [
-    {
-      code: "stde",
-      firstName: "Stefan",
-      lastName: "Derungs"
-    },
-    {
-      code: "xaro",
-      firstName: "Xabier",
-      lastName: "Rodriguez"
-    },
-  ]
+  persons: Person[] = [];
   displayedColumns: string[] = ["code", "firstname", "lastname"];
 
   filteredSuggestions!: Observable<Person[]>;
@@ -76,6 +65,11 @@ export class PersonsComponent implements OnInit {
     } catch (e) {
       this.router.navigate(["/skills"]);
     }
+
+    try {
+      this.persons = router.getCurrentNavigation()!.extras.state!.selectedPersons;
+    } catch (e) {
+    }
   }
 
   ngOnInit(): void {
@@ -99,6 +93,10 @@ export class PersonsComponent implements OnInit {
     this.personControl.removeValidators(this.notExistsValidator)
     this.notExistsValidator = notExistsValidator(this.persons.map(person => person.code));
     this.personControl.addValidators(this.notExistsValidator);
+  }
+
+  navigateBack(): void {
+    this.router.navigate(["skills"], {state: {selectedSkills: this.skills, selectedPersons: this.persons}})
   }
 
   _filter(value: string): Person[] {
