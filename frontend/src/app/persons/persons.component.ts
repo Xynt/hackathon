@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
+import {Router} from "@angular/router";
+import {Skill} from "../skills/skills.component";
 
 @Component({
   selector: 'app-persons',
   templateUrl: './persons.component.html',
   styleUrls: ['./persons.component.scss']
 })
-export class PersonsComponent implements OnInit {
+export class PersonsComponent {
 
-  constructor() { }
+  skills: Skill[] = [];
 
-  ngOnInit(): void {
+  constructor(private router: Router) {
+    try {
+      this.skills = router.getCurrentNavigation()!.extras.state!.selectedSkills;
+    } catch (e) {
+      this.router.navigate(["/skills"]);
+    }
   }
 
 }

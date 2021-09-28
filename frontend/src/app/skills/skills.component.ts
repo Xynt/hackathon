@@ -5,6 +5,7 @@ import {FormControl, ValidatorFn, Validators} from "@angular/forms";
 import {map, startWith} from "rxjs/operators";
 import {existsValidator} from "../service/directive/exists.directive";
 import {notExistsValidator} from "../service/directive/not-exists.directive";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-skills',
@@ -28,6 +29,9 @@ export class SkillsComponent implements OnInit {
 
   @ViewChild(MatTable) table!: MatTable<Skill>;
 
+  constructor(private router: Router) {
+  }
+
   ngOnInit(): void {
     this.filteredSuggestions = this.skillControl.valueChanges
     .pipe(
@@ -50,6 +54,10 @@ export class SkillsComponent implements OnInit {
     this.skillControl.removeValidators(this.notExistsValidator)
     this.notExistsValidator = notExistsValidator(this.skills.map(skill => skill.name));
     this.skillControl.addValidators(this.notExistsValidator);
+  }
+
+  continueWithData(): void {
+    this.router.navigate(["persons"], {state: {selectedSkills: this.skills}})
   }
 
   _filter(value: string): Skill[] {

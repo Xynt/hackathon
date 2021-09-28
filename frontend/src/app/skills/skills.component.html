@@ -36,6 +36,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <app-page-navigator-buttons [showLeft]="false" [rightClickUrl]="'/persons'"></app-page-navigator-buttons>
+  <app-page-navigator-buttons [showLeft]="false" (onRightClick)="continueWithData()"></app-page-navigator-buttons>
 </div>
 

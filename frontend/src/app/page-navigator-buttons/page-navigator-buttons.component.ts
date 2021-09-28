@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-page-navigator-buttons',
@@ -12,9 +12,9 @@ export class PageNavigatorButtonsComponent {
   @Input()
   showRight: boolean = true;
 
-  @Input()
-  leftClickUrl = "";
+  @Output()
+  onLeftClick: EventEmitter<any> = new EventEmitter();
 
-  @Input()
-  rightClickUrl = "";
+  @Output()
+  onRightClick: EventEmitter<any> = new EventEmitter();
 }
