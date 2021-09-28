@@ -8,6 +8,7 @@ import {Person} from "../../../peoplefinder-api/model/person";
 import {Skill} from "../../../peoplefinder-api/model/skill";
 import {map, startWith} from "rxjs/operators";
 import {MatTable} from "@angular/material/table";
+import {PeopleServiceApi} from "../../../peoplefinder-api/api/people.service";
 
 @Component({
   selector: 'app-persons',
@@ -20,46 +21,16 @@ export class PersonsComponent implements OnInit {
   displayedColumns: string[] = ["code", "firstname", "lastname"];
 
   filteredSuggestions!: Observable<Person[]>;
-  allPersons: Person[] = [
-    {
-      code: "stde",
-      firstName: "Stefan",
-      lastName: "Derungs"
-    },
-    {
-      code: "xaro",
-      firstName: "Xabier",
-      lastName: "Rodriguez"
-    },
-    {
-      code: "lybo",
-      firstName: "Lyndsey",
-      lastName: "Bonelli"
-    },
-    {
-      code: "davo",
-      firstName: "Davide",
-      lastName: "Vanoni"
-    },
-    {
-      code: "anko",
-      firstName: "Andres",
-      lastName: "Konrad"
-    },
-  ]
+  allPersons: Person[] = [];
 
   notExistsValidator: ValidatorFn = notExistsValidator(this.persons.map(person => person.code));
 
-  personControl: FormControl = new FormControl("", [
-    Validators.required,
-    existsValidator(this.allPersons.map(person => person.code)),
-    this.notExistsValidator
-  ]);
+  personControl: FormControl = new FormControl("", []);
   skills: Skill[] = [];
 
   @ViewChild(MatTable) table!: MatTable<Skill>;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private peopleServiceApi: PeopleServiceApi) {
     try {
       this.skills = router.getCurrentNavigation()!.extras.state!.selectedSkills;
     } catch (e) {
@@ -73,6 +44,15 @@ export class PersonsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.peopleServiceApi.getPeople().subscribe(people => {
+      this.allPersons = people;
+      this.personControl.addValidators([
+        Validators.required,
+        existsValidator(this.allPersons.map(person => person.code)),
+        this.notExistsValidator
+      ])
+    })
+
     this.filteredSuggestions = this.personControl.valueChanges
     .pipe(
       startWith(''),
