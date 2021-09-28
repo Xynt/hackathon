@@ -107,7 +107,11 @@ export class PersonsComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     let existingValuesRemovedSuggestions = this.allPersons.filter(option => !this.persons.map(person => person.code).includes(option.code))
-    let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => option.code.toLowerCase().includes(filterValue));
+    let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => {
+      let includesCode = option.code.toLowerCase().includes(filterValue);
+      let includesName = (option.firstName.toLowerCase() + " " + option.lastName.toLowerCase()).includes(filterValue);
+      return includesCode || includesName;
+    });
     return searchFilteredSuggestions.splice(0, 5);
   }
 
