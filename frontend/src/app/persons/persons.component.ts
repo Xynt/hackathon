@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {FormControl, ValidatorFn, Validators} from "@angular/forms";
 import {existsValidator} from "../service/directive/exists.directive";
@@ -6,29 +6,20 @@ import {Observable} from "rxjs";
 import {notExistsValidator} from "../service/directive/not-exists.directive";
 import {Person} from "../../../peoplefinder-api/model/person";
 import {Skill} from "../../../peoplefinder-api/model/skill";
+import {map, startWith} from "rxjs/operators";
+import {MatTable} from "@angular/material/table";
 
 @Component({
   selector: 'app-persons',
   templateUrl: './persons.component.html',
   styleUrls: ['./persons.component.scss']
 })
-export class PersonsComponent {
+export class PersonsComponent implements OnInit {
 
-  persons: Person[] = [
-    {
-      code: "stde",
-      firstName: "Stefan",
-      lastName: "Derungs"
-    },
-    {
-      code: "xaro",
-      firstName: "Xabier",
-      lastName: "Rodriguez"
-    },
-  ]
+  persons: Person[] = [];
   displayedColumns: string[] = ["code", "firstname", "lastname"];
 
-  filteredSuggestions!: Observable<Skill[]>;
+  filteredSuggestions!: Observable<Person[]>;
   allPersons: Person[] = [
     {
       code: "stde",
@@ -52,8 +43,8 @@ export class PersonsComponent {
     },
     {
       code: "anko",
-      firstName: "Konrad",
-      lastName: "Andres"
+      firstName: "Andres",
+      lastName: "Konrad"
     },
   ]
 
@@ -66,12 +57,62 @@ export class PersonsComponent {
   ]);
   skills: Skill[] = [];
 
+  @ViewChild(MatTable) table!: MatTable<Skill>;
+
   constructor(private router: Router) {
     try {
       this.skills = router.getCurrentNavigation()!.extras.state!.selectedSkills;
     } catch (e) {
       this.router.navigate(["/skills"]);
     }
+
+    try {
+      this.persons = router.getCurrentNavigation()!.extras.state!.selectedPersons;
+    } catch (e) {
+    }
+  }
+
+  ngOnInit(): void {
+    this.filteredSuggestions = this.personControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+  addPerson(): void {
+    if (this.personControl.valid) {
+      this.persons.push(this.allPersons.find(person => person.code == this.personControl.value)!);
+      this.resetExistsValidator()
+      this.table.renderRows();
+      this.personControl.reset();
+    }
+  }
+
+  resetExistsValidator(): void {
+    this.personControl.removeValidators(this.notExistsValidator)
+    this.notExistsValidator = notExistsValidator(this.persons.map(person => person.code));
+    this.personControl.addValidators(this.notExistsValidator);
+  }
+
+  navigateBack(): void {
+    this.router.navigate(["skills"], {state: {selectedSkills: this.skills, selectedPersons: this.persons}})
+  }
+
+  _filter(value: string): Person[] {
+    if (!value) {
+      value = "";
+    }
+
+    const filterValue = value.toLowerCase();
+
+    let existingValuesRemovedSuggestions = this.allPersons.filter(option => !this.persons.map(person => person.code).includes(option.code))
+    let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => {
+      let includesCode = option.code.toLowerCase().includes(filterValue);
+      let includesName = (option.firstName.toLowerCase() + " " + option.lastName.toLowerCase()).includes(filterValue);
+      return includesCode || includesName;
+    });
+    return searchFilteredSuggestions.splice(0, 5);
   }
 
 }

@@ -7,6 +7,7 @@ import {existsValidator} from "../service/directive/exists.directive";
 import {notExistsValidator} from "../service/directive/not-exists.directive";
 import {Router} from "@angular/router";
 import {Skill} from "../../../peoplefinder-api/model/skill";
+import {Person} from "../../../peoplefinder-api/model/person";
 
 @Component({
   selector: 'app-skills',
@@ -14,7 +15,8 @@ import {Skill} from "../../../peoplefinder-api/model/skill";
   styleUrls: ['./skills.component.scss']
 })
 export class SkillsComponent implements OnInit {
-  skills: Skill[] = [{name: "Spring"}, {name: "CSS"}, {name: "HTML"}];
+  persons: Person[] = []
+  skills: Skill[] = [];
   displayedColumns: string[] = ["name"];
   suggestions: Skill[] = [{name: "Spring"}, {name: "CSS"}, {name: "HTML"}, {name: "Angular"}, {name: "DOTNET"}, {name: "Test"}]
 
@@ -31,6 +33,11 @@ export class SkillsComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<Skill>;
 
   constructor(private router: Router) {
+    try {
+      this.skills = router.getCurrentNavigation()!.extras.state!.selectedSkills;
+      this.persons = router.getCurrentNavigation()!.extras.state!.selectedPersons;
+    } catch (e) {
+    }
   }
 
   ngOnInit(): void {
@@ -58,7 +65,7 @@ export class SkillsComponent implements OnInit {
   }
 
   continueWithData(): void {
-    this.router.navigate(["persons"], {state: {selectedSkills: this.skills}})
+    this.router.navigate(["persons"], {state: {selectedSkills: this.skills, selectedPersons: this.persons}})
   }
 
   _filter(value: string): Skill[] {

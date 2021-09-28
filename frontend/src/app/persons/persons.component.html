@@ -2,7 +2,7 @@
   <div class="add-header">
     <form>
       <mat-form-field class="input-field-box" appearance="fill">
-        <mat-label>Skill name</mat-label>
+        <mat-label>Zühlke code (Kürzel)</mat-label>
         <input matInput placeholder="Search for any name..." autocomplete="off" class="input-field"
                [matAutocomplete]="personName"
                [formControl]="personControl">
@@ -16,13 +16,13 @@
           Person is already added
         </mat-error>
         <mat-autocomplete #personName="matAutocomplete">
-          <mat-option *ngFor="let option of filteredSuggestions | async" [value]="option.name">
-            {{ option.name }}
+          <mat-option *ngFor="let option of filteredSuggestions | async" [value]="option.code">
+            {{ option.firstName + " " + option.lastName }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </form>
-    <button mat-flat-button color="accent" class="input-button">
+    <button mat-flat-button color="accent" class="input-button" (click)="addPerson()">
       <mat-icon>add</mat-icon>
     </button>
   </div>
@@ -44,6 +44,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <app-page-navigator-buttons></app-page-navigator-buttons>
+  <app-page-navigator-buttons (onLeftClick)="navigateBack()"></app-page-navigator-buttons>
 </div>
 
