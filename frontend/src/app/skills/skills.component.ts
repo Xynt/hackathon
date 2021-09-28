@@ -33,10 +33,15 @@ export class SkillsComponent implements OnInit {
       this.skills.push({name: this.skillControl.value});
       this.skillControl.setValue("");
       this.table.renderRows();
+      this.skillControl.reset();
     }
   }
 
   _filter(value: string): Skill[] {
+    if (!value) {
+      value = "";
+    }
+
     const filterValue = value.toLowerCase();
 
     return this.suggestions.filter((option => option.name.toLowerCase().includes(filterValue))).splice(0, 5);
