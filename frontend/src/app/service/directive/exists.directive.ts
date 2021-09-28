@@ -17,7 +17,7 @@ export function existsValidator(values: string[]): ValidatorFn {
     if (values.includes(control.value)) {
       return null;
     } else {
-      return {invalidValue: control.value};
+      return {notExists: control.value};
     }
   };
 }
