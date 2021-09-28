@@ -64,7 +64,11 @@ task copyFeApi(dependsOn: generateFeApi) {
         copy {
             from "${buildDir}/fe/api"
             into "${rootDir}/frontend/peoplefinder-api/api"
-            filter { line -> line.replaceAll('localVarHeaders: localVarHeaders,', '') }
+            filter {
+                line -> line
+                        .replaceAll('localVarHeaders: localVarHeaders,', '')
+                        .replaceAll('protected basePath = \'http://localhost\';', 'protected basePath = \'http://localhost:8080\';')
+            }
         }
         copy {
             from "${buildDir}/fe/model"
