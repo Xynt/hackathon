@@ -5,6 +5,9 @@ info:
   version: 1.0.0
   contact:
     email: our-fancy-team@zuehlke.com
+servers:
+  - url: http://localhost:8080
+    description: local server
 paths:
   /people:
     get:
