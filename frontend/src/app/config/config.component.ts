@@ -61,7 +61,7 @@ export class ConfigComponent implements OnInit {
 
   submit(): void {
     this.teamSetupService.config = {teamDimension: this.teamDimension};
-    this.teamSetupService.submit(this.proficienciesPerPerson).subscribe(teams => {
+    this.teamSetupService.submit().subscribe(teams => {
       // TODO Transmit result to new component?
       this.resultService.teams = teams;
       this.router.navigate(["result"]);

@@ -68,12 +68,16 @@ export class TeamSetupService {
     this._config = value;
   }
 
-  submit(proficiencyPerPerson: ProficiencyPerPerson): Observable<Team[]> {
+  submit(): Observable<Team[]> {
     // map to Team
+    // let members: { [key: string]: Criteria } = {};
+    // Object.keys(proficiencyPerPerson).forEach(key => {
+    //   members[key] = TeamSetupService.mapToCriteria(proficiencyPerPerson[key].proficiencies);
+    // })
+
     let members: { [key: string]: Criteria } = {};
-    Object.keys(proficiencyPerPerson).forEach(key => {
-      members[key] = TeamSetupService.mapToCriteria(proficiencyPerPerson[key].proficiencies);
-    })
+
+    this.people.forEach(p => members[p.person.code] = TeamSetupService.mapToCriteria(p.proficiencies))
 
     const team: Team = {members: members};
     return this.teamsServiceApi.calculateTeams(team, this._config.teamDimension);
