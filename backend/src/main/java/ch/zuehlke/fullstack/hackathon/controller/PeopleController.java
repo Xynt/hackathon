@@ -21,6 +21,7 @@ public class PeopleController implements PeopleApi {
     }
 
 
+    @Override
     public ResponseEntity<byte[]> getAvatarForPerson(String code) {
         try {
             return ResponseEntity.ok(this.peopleService.getPersonAvatar(code));
