@@ -76,9 +76,7 @@ export class TeamSetupService {
     })
 
     const team: Team = {members: members};
-    // return this.teamsServiceApi.calculateTeams(team, this._config.teamDimension);
-
-    return of(this.DUMMY_RESULT);
+    return this.teamsServiceApi.calculateTeams(team, this._config.teamDimension);
   }
 
   private static mapToCriteria(proficiencies: Proficiency[]): Criteria {
