@@ -14,7 +14,7 @@
   flex-direction: row;
 
   padding: 10px;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid #ECEFF4;
 
   .person-name {
     flex-grow: 2;
@@ -23,4 +23,8 @@
   .person-skill {
     max-width: 80px;
   }
+}
+
+.input-field {
+  color: #ECEFF4;
 }

@@ -1,25 +1,8 @@
 <div>
   <div class="config-overview">
-    <div class="person-config-overview">
-      <div class="person-config-row person-config-header">
-        <div class="person-config-element person-name">Name</div>
-        <div class="person-config-element" *ngFor="let header of this.getSkillNames()">
-          {{header}}
-        </div>
-      </div>
-      <div class="person-config-row" *ngFor="let personConfig of this.getDisplay()">
-        <div class="person-config-element person-name">{{personConfig.fullname}}</div>
-        <ng-container *ngFor="let proficiency of personConfig.proficiencies">
-          <div class="person-config-element person-skill">
-              <input matInput name="rating" [(ngModel)]="proficiency.rating" type="number">
-          </div>
-        </ng-container>
-      </div>
-    </div>
-
     <mat-form-field class="input-field-box" appearance="fill">
       <mat-label>Team size</mat-label>
-      <input matInput name="teamDimension" [value]="teamDimension" type="number" placeholder="5">
+      <input class="input-field" matInput name="teamDimension" [(ngModel)]="teamDimension" type="number" placeholder="5">
     </mat-form-field>
   </div>
 
