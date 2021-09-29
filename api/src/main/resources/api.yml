@@ -20,6 +20,27 @@ paths:
               schema:
                 items:
                   $ref: '#/components/schemas/Person'
+  /people/{code}/avatar:
+    get:
+      tags:
+        - people
+      operationId: getAvatarForPerson
+      summary: Get the avater of the person
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: string
+          required: true
+          description: Code of the person to load the avatar
+      responses:
+        200:
+          description: OK
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: byte
   /skills:
     get:
       tags:
