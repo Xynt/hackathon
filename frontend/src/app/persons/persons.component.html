@@ -27,18 +27,22 @@
     </button>
   </div>
 
-  <table mat-table [dataSource]="persons">
+  <table mat-table [dataSource]="tableEntries">
     <ng-container matColumnDef="code">
       <th mat-header-cell *matHeaderCellDef> Code </th>
-      <td mat-cell *matCellDef="let person"> {{person.code}} </td>
+      <td mat-cell *matCellDef="let p"> {{p.person.code}} </td>
     </ng-container>
     <ng-container matColumnDef="firstname">
       <th mat-header-cell *matHeaderCellDef> Firstname </th>
-      <td mat-cell *matCellDef="let person"> {{person.firstName}} </td>
+      <td mat-cell *matCellDef="let p"> {{p.person.firstName}} </td>
     </ng-container>
     <ng-container matColumnDef="lastname">
       <th mat-header-cell *matHeaderCellDef> Lastname </th>
-      <td mat-cell *matCellDef="let person"> {{person.lastName}} </td>
+      <td mat-cell *matCellDef="let p"> {{p.person.lastName}} </td>
+    </ng-container>
+    <ng-container *ngFor="let proficiency of displayedColumns.slice(3); let i = index" matColumnDef="{{proficiency}}">
+      <th mat-header-cell *matHeaderCellDef> {{proficiency}} </th>
+      <td mat-cell *matCellDef="let p"> {{getAccordingProficiencyValue(p, proficiency)}} </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
