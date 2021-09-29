@@ -1,11 +1,11 @@
 import {Person} from "../../../peoplefinder-api/model/person";
-import {Skill} from "../../../peoplefinder-api/model/skill";
+import {Proficiency} from "../../../peoplefinder-api/model/proficiency";
 
 export class PersonWithProficiency {
   person: Person;
-  proficiencies: Map<Skill, number>;
+  proficiencies: Proficiency[];
 
-  constructor(person: Person, proficiencies: Map<Skill, number>) {
+  constructor(person: Person, proficiencies: Proficiency[]) {
     this.person = person;
     this.proficiencies = proficiencies;
   }

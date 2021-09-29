@@ -11,6 +11,7 @@ import {MatTable} from "@angular/material/table";
 import {PeopleServiceApi} from "../../../peoplefinder-api/api/people.service";
 import {TeamSetupService} from "../service/team-setup.service";
 import {PersonWithProficiency} from "../models/person-with-proficiency"
+import {Proficiency} from "../../../peoplefinder-api/model/proficiency";
 
 @Component({
   selector: 'app-persons',
@@ -71,7 +72,7 @@ export class PersonsComponent implements OnInit {
   personToPersonWithProficiency(person: Person): PersonWithProficiency {
     return new PersonWithProficiency(
       person,
-      new Map(this.selectedSkills.map(skill => [skill, 0]))
+      this.selectedSkills.map(skill => <Proficiency>{skill: skill, rating: 0})
     );
   }
 
@@ -82,22 +83,22 @@ export class PersonsComponent implements OnInit {
   }
 
   navigateBack(): void {
-    this.router.navigate(["skills"])
+    this.router.navigate(["skills"]);
+    this.teamSetupService.people = this.selectedPeople;
   }
 
   continueWithData(): void {
     this.teamSetupService.people = this.selectedPeople;
-    this.router.navigate(["config"])
+    this.router.navigate(["config"]);
   }
 
   getAccordingProficiencyValue(p: PersonWithProficiency, skillName: string): number {
-    let skill: Skill = this.selectedSkills.find(s => s.name == skillName)!;
-    return p.proficiencies.get(skill)!;
+    return p.proficiencies.find(p => p.skill.name == skillName)!.rating;
   }
 
   editedFor(p: PersonWithProficiency, skillName: string, value: number) {
     let skill: Skill = this.selectedSkills.find(s => s.name == skillName)!;
-    this.selectedPeople.find(entry => entry.person.code == p.person.code)!.proficiencies.set(skill, value);
+    this.selectedPeople.find(entry => entry.person.code == p.person.code)!.proficiencies.find(p => p.skill.name == skillName)!.rating = value;
   }
 
   _filter(value: string): Person[] {
