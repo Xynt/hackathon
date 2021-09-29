@@ -25,7 +25,7 @@ public class RandomStrategy implements Strategy {
         Team realTeam = null;
         for (int i = 0; i < peopleCodes.size(); i++) {
             if (i % dimension == 0) {
-                realTeam = new Team().name(UUID.randomUUID().toString());
+                realTeam = new Team().name("Team " + (teams.size() + 1));
                 teams.add(realTeam);
             }
             realTeam.putMembersItem(peopleCodes.get(i), team.getMembers().get(peopleCodes.get(i)));
