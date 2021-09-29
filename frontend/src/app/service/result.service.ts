@@ -16,4 +16,8 @@ export class ResultService {
   set teams(value: Team[]) {
     this._teams = value;
   }
+
+  getImagePath(code: string) {
+    return "http://localhost:8080/people/" + code + "/avatar";
+  }
 }

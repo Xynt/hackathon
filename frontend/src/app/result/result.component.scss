@@ -1,0 +1,23 @@
+.team-overview {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-header {
+  color: white;
+  font-size: 20px;
+}
+
+.team-avatars {
+  display: flex;
+  flex-direction: row;
+
+  .avatar {
+    margin: 5px;
+  }
+}
+
+.person-avatar {
+  width: 100px;
+  height: 100px;
+}

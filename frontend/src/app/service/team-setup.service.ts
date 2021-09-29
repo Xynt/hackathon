@@ -29,9 +29,10 @@ export class TeamSetupService {
       }
     },
     {
-      name: "Team 1", members: {
+      name: "Team 3", members: {
         lume: {proficiencies: [{skill: {name: "Angular"}, rating: 4}, {skill: {name: "Spring"}, rating: 3}]},
-        pass: {proficiencies: [{skill: {name: "Angular"}, rating: 2}, {skill: {name: "Spring"}, rating: 5}]}
+        pass: {proficiencies: [{skill: {name: "Angular"}, rating: 2}, {skill: {name: "Spring"}, rating: 5}]},
+        asdf: {proficiencies: [{skill: {name: "Angular"}, rating: 2}, {skill: {name: "Spring"}, rating: 5}]}
       }
     }
   ]
