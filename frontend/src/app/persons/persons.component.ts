@@ -10,7 +10,7 @@ import {map, startWith} from "rxjs/operators";
 import {MatTable} from "@angular/material/table";
 import {PeopleServiceApi} from "../../../peoplefinder-api/api/people.service";
 import {TeamSetupService} from "../service/team-setup.service";
-import {PersonWithProficiency} from "../model/person-with-proficiency"
+import {PersonWithProficiency} from "../models/person-with-proficiency"
 
 @Component({
   selector: 'app-persons',
