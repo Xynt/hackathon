@@ -10,10 +10,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class TeamsServiceTest {
 
     @Test
-    public void dummyJson() throws JsonProcessingException {
+    public void easyTest() throws JsonProcessingException {
         Person person1 = new Person().firstName("Lyndsey").lastName("Bonelli").code("lybo");
         Person person2 = new Person().firstName("Xabier").lastName("Rodriguez").code("xaro");
         Person person3 = new Person().firstName("Davide").lastName("Vanoni").code("dava");
@@ -55,6 +57,8 @@ public class TeamsServiceTest {
 
         ObjectWriter mapper = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = mapper.writeValueAsString(team);
-        System.out.println(json);
+
+        assertThat(team.getMembers()).hasSize(6);
+        assertThat(json).isNotEmpty();
     }
 }
