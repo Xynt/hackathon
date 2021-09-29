@@ -3,6 +3,10 @@ import {Skill} from "../../../peoplefinder-api/model/skill";
 import {Config} from "../models/config";
 import {Person} from "../../../peoplefinder-api/model/person";
 import {TeamsServiceApi} from "../../../peoplefinder-api/api/teams.service";
+import {ProficiencyPerPerson} from "../config/config.component";
+import {Team} from "../../../peoplefinder-api/model/team";
+import {Proficiency} from "../../../peoplefinder-api/model/proficiency";
+import {Criteria} from "../../../peoplefinder-api/model/criteria";
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +42,19 @@ export class TeamSetupService {
     this._config = value;
   }
 
-  submit() {
+  submit(proficiencyPerPerson: ProficiencyPerPerson) {
+    // map to Team
+    let members: { [key: string]: Criteria } = {};
+    Object.keys(proficiencyPerPerson).forEach(key => {
+      members[key] = this.mapToCriteria(proficiencyPerPerson[key].proficiencies);
+    })
 
+    const team: Team = {members: members};
+    console.log(team);
+    this.teamsServiceApi.calculateTeams(team, this._config.teamDimension);
+  }
+
+  private mapToCriteria(proficiencies: Proficiency[]): Criteria {
+    return {proficiencies: proficiencies};
   }
 }
