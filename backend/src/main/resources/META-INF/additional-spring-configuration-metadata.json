@@ -1,6 +1,11 @@
 {
   "properties": [
     {
+      "name": "app.cors.allowed-origins",
+      "type": "java.lang.String",
+      "description": "Origins allowed to accept requests."
+    },
+    {
       "name": "app.strategy",
       "type": "java.lang.String",
       "description": "The strategy to use. Could be RANDOM, PERFORMANCE AND LEARN."

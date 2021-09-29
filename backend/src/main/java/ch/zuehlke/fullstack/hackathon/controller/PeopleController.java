@@ -6,7 +6,6 @@ import com.zuehlke.hackathon.peoplefinder.model.Person;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
@@ -30,7 +29,6 @@ public class PeopleController implements PeopleApi {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @Override
     public ResponseEntity<List<Person>> getPeople() {
         List<Person> people = this.peopleService.getPeople();
