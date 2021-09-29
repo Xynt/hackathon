@@ -18,7 +18,7 @@ import {PersonWithProficiency} from "../models/person-with-proficiency"
   styleUrls: ['./persons.component.scss']
 })
 export class PersonsComponent implements OnInit {
-  selectedPeople: Person[] = [];
+  selectedPeople: PersonWithProficiency[] = [];
   selectedSkills: Skill[] = [];
 
   selectablePeople: Person[] = [];
@@ -26,10 +26,8 @@ export class PersonsComponent implements OnInit {
   displayedColumns: string[] = ["code", "firstname", "lastname"];
   filteredSuggestions!: Observable<Person[]>;
 
-  notExistsValidator: ValidatorFn = notExistsValidator(this.selectedPeople.map(person => person.code));
+  notExistsValidator: ValidatorFn = notExistsValidator(this.selectedPeople.map(p => p.person.code));
   personControl: FormControl = new FormControl("", []);
-
-  tableEntries: PersonWithProficiency[] = [];
 
   @ViewChild(MatTable) table!: MatTable<PersonWithProficiency>;
 
@@ -58,15 +56,12 @@ export class PersonsComponent implements OnInit {
       map(value => this._filter(value))
     );
 
-
-    this.selectedPeople.forEach(person => this.tableEntries.push(this.personToPersonWithProficiency(person)));
     this.selectedSkills.forEach(skill => this.displayedColumns.push(skill.name));
   }
 
   addPerson(): void {
     if (this.personControl.valid) {
-      this.selectedPeople.push(this.selectablePeople.find(person => person.code == this.personControl.value)!);
-      this.tableEntries.push(this.personToPersonWithProficiency(this.selectablePeople.find(person => person.code == this.personControl.value)!))
+      this.selectedPeople.push(this.personToPersonWithProficiency(this.selectablePeople.find(person => person.code == this.personControl.value)!));
       this.resetExistsValidator()
       this.table.renderRows();
       this.personControl.reset();
@@ -82,7 +77,7 @@ export class PersonsComponent implements OnInit {
 
   resetExistsValidator(): void {
     this.personControl.removeValidators(this.notExistsValidator)
-    this.notExistsValidator = notExistsValidator(this.selectedPeople.map(person => person.code));
+    this.notExistsValidator = notExistsValidator(this.selectedPeople.map(p => p.person.code));
     this.personControl.addValidators(this.notExistsValidator);
   }
 
@@ -102,7 +97,7 @@ export class PersonsComponent implements OnInit {
 
   editedFor(p: PersonWithProficiency, skillName: string, value: number) {
     let skill: Skill = this.selectedSkills.find(s => s.name == skillName)!;
-    this.tableEntries.find(entry => entry.person.code == p.person.code)!.proficiencies.set(skill, value);
+    this.selectedPeople.find(entry => entry.person.code == p.person.code)!.proficiencies.set(skill, value);
   }
 
   _filter(value: string): Person[] {
@@ -112,7 +107,7 @@ export class PersonsComponent implements OnInit {
 
     const filterValue = value.toLowerCase();
 
-    let existingValuesRemovedSuggestions = this.selectablePeople.filter(option => !this.selectedPeople.map(person => person.code).includes(option.code))
+    let existingValuesRemovedSuggestions = this.selectablePeople.filter(option => !this.selectedPeople.map(p => p.person.code).includes(option.code))
     let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => {
       let includesCode = option.code.toLowerCase().includes(filterValue);
       let includesName = (option.firstName.toLowerCase() + " " + option.lastName.toLowerCase()).includes(filterValue);

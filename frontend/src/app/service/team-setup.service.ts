@@ -8,6 +8,7 @@ import {Team} from "../../../peoplefinder-api/model/team";
 import {Proficiency} from "../../../peoplefinder-api/model/proficiency";
 import {Criteria} from "../../../peoplefinder-api/model/criteria";
 import {Observable, of} from "rxjs";
+import {PersonWithProficiency} from "../models/person-with-proficiency";
 
 @Injectable({
   providedIn: 'root'
@@ -37,17 +38,17 @@ export class TeamSetupService {
     }
   ]
 
-  private _people: Person[] = [];
+  private _people: PersonWithProficiency[] = [];
   private _skills: Skill[] = [];
   private _config: Config = {teamDimension: 2};
 
   constructor(private teamsServiceApi: TeamsServiceApi) { }
 
-  get people(): Person[] {
+  get people(): PersonWithProficiency[] {
     return this._people;
   }
 
-  set people(value: Person[]) {
+  set people(value: PersonWithProficiency[]) {
     this._people = value;
   }
 

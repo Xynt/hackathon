@@ -43,8 +43,8 @@ export class ConfigComponent implements OnInit {
 
     const selectedPeople = this.teamSetupService.people;
     const teamMembers: {[key: string]: PersonConfig} = {};
-    for (let person of selectedPeople) {
-      teamMembers[person.code] = {fullname: person.firstName + " " + person.lastName, proficiencies: initProficiencies.map(el => Object.assign({}, el))};
+    for (let p of selectedPeople) {
+      teamMembers[p.person.code] = {fullname: p.person.firstName + " " + p.person.lastName, proficiencies: initProficiencies.map(el => Object.assign({}, el))};
     }
 
     return teamMembers;

@@ -7,7 +7,6 @@ import {existsValidator} from "../service/directive/exists.directive";
 import {notExistsValidator} from "../service/directive/not-exists.directive";
 import {Router} from "@angular/router";
 import {Skill} from "../../../peoplefinder-api/model/skill";
-import {Person} from "../../../peoplefinder-api/model/person";
 import {SkillsServiceApi} from "../../../peoplefinder-api/api/skills.service";
 import {TeamSetupService} from "../service/team-setup.service";
 
@@ -17,7 +16,6 @@ import {TeamSetupService} from "../service/team-setup.service";
   styleUrls: ['./skills.component.scss']
 })
 export class SkillsComponent implements OnInit {
-  selectedPersons: Person[] = []
   selectedSkills: Skill[] = [];
 
   selectableSkills: Skill[] = [];
@@ -37,7 +35,6 @@ export class SkillsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedSkills = [...this.teamSetupService.skills];
-    this.selectedPersons = [...this.teamSetupService.people];
 
     this.skillsServiceApi.getSkills().subscribe(allSkills => {
       this.selectableSkills = allSkills;

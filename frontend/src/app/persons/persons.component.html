@@ -27,7 +27,7 @@
     </button>
   </div>
 
-  <table mat-table [dataSource]="tableEntries">
+  <table mat-table [dataSource]="selectedPeople">
     <ng-container matColumnDef="code">
       <th mat-header-cell *matHeaderCellDef> Code</th>
       <td mat-cell *matCellDef="let p"> {{p.person.code}} </td>
