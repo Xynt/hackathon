@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {TeamSetupService} from "../service/team-setup.service";
 import {Proficiency} from "../../../peoplefinder-api/model/proficiency";
+import {ResultService} from "../service/result.service";
 
 export interface ProficiencyPerPerson {
   [code: string]: PersonConfig;
@@ -22,7 +23,7 @@ export class ConfigComponent implements OnInit {
 
   teamDimension: number = 2;
 
-  constructor(private router: Router, private teamSetupService: TeamSetupService) {
+  constructor(private router: Router, private teamSetupService: TeamSetupService, private resultService: ResultService) {
   }
 
   ngOnInit(): void {
@@ -60,10 +61,10 @@ export class ConfigComponent implements OnInit {
 
   submit(): void {
     this.teamSetupService.config = {teamDimension: this.teamDimension};
-    this.teamSetupService.submit(this.proficienciesPerPerson);
-  }
-
-  navigateBack() {
-
+    this.teamSetupService.submit(this.proficienciesPerPerson).subscribe(teams => {
+      // TODO Transmit result to new component?
+      this.resultService.teams = teams;
+      this.router.navigate(["result"]);
+    });
   }
 }

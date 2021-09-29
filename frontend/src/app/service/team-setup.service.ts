@@ -7,11 +7,35 @@ import {ProficiencyPerPerson} from "../config/config.component";
 import {Team} from "../../../peoplefinder-api/model/team";
 import {Proficiency} from "../../../peoplefinder-api/model/proficiency";
 import {Criteria} from "../../../peoplefinder-api/model/criteria";
+import {Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeamSetupService {
+  readonly DUMMY_RESULT: Team[] = [
+    {
+      name: "Team 1", members: {
+        lybo: {proficiencies: [{skill: {name: "Angular"}, rating: 1}, {skill: {name: "Spring"}, rating: 1}]},
+        dava: {proficiencies: [{skill: {name: "Angular"}, rating: 2}, {skill: {name: "Spring"}, rating: 2}]},
+        xaro: {proficiencies: [{skill: {name: "Angular"}, rating: 3}, {skill: {name: "Spring"}, rating: 3}]}
+      }
+    },
+    {
+      name: "Team 2", members: {
+        stbo: {proficiencies: [{skill: {name: "Angular"}, rating: 5}, {skill: {name: "Spring"}, rating: 1}]},
+        geze: {proficiencies: [{skill: {name: "Angular"}, rating: 2}, {skill: {name: "Spring"}, rating: 5}]},
+        jar: {proficiencies: [{skill: {name: "Angular"}, rating: 2}, {skill: {name: "Spring"}, rating: 3}]}
+      }
+    },
+    {
+      name: "Team 1", members: {
+        lume: {proficiencies: [{skill: {name: "Angular"}, rating: 4}, {skill: {name: "Spring"}, rating: 3}]},
+        pass: {proficiencies: [{skill: {name: "Angular"}, rating: 2}, {skill: {name: "Spring"}, rating: 5}]}
+      }
+    }
+  ]
+
   private _people: Person[] = [];
   private _skills: Skill[] = [];
   private _config: Config = {teamDimension: 2};
@@ -42,19 +66,20 @@ export class TeamSetupService {
     this._config = value;
   }
 
-  submit(proficiencyPerPerson: ProficiencyPerPerson) {
+  submit(proficiencyPerPerson: ProficiencyPerPerson): Observable<Team[]> {
     // map to Team
     let members: { [key: string]: Criteria } = {};
     Object.keys(proficiencyPerPerson).forEach(key => {
-      members[key] = this.mapToCriteria(proficiencyPerPerson[key].proficiencies);
+      members[key] = TeamSetupService.mapToCriteria(proficiencyPerPerson[key].proficiencies);
     })
 
     const team: Team = {members: members};
-    console.log(team);
-    this.teamsServiceApi.calculateTeams(team, this._config.teamDimension);
+    // return this.teamsServiceApi.calculateTeams(team, this._config.teamDimension);
+
+    return of(this.DUMMY_RESULT);
   }
 
-  private mapToCriteria(proficiencies: Proficiency[]): Criteria {
+  private static mapToCriteria(proficiencies: Proficiency[]): Criteria {
     return {proficiencies: proficiencies};
   }
 }

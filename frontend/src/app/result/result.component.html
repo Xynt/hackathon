@@ -1,1 +1,10 @@
-<p>result works!</p>
+<div>
+  <div *ngFor="let team of teams">
+    <div>{{team.name}}</div>
+    <div>
+      <div *ngFor="let name of getMembersOf(team)">
+        {{name}}
+      </div>
+    </div>
+  </div>
+</div>
