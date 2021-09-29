@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "app.strategy",
+      "type": "java.lang.String",
+      "description": "The strategy to use. Could be RANDOM, PERFORMANCE AND LEARN."
+    }
+  ] }

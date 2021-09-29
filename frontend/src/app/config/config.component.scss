@@ -1,0 +1,26 @@
+.config-overview {
+  margin-bottom: 30px;
+}
+
+.person-config-overview {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 20px;
+}
+
+.person-config-row {
+  display: flex;
+  flex-direction: row;
+
+  padding: 10px;
+  border-bottom: 2px solid white;
+
+  .person-name {
+    flex-grow: 2;
+  }
+
+  .person-skill {
+    max-width: 80px;
+  }
+}

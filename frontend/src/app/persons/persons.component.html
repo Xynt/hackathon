@@ -1,4 +1,4 @@
-<div class="skill-content">
+<div>
   <div class="add-header">
     <form>
       <mat-form-field class="input-field-box" appearance="fill">
@@ -53,6 +53,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <app-page-navigator-buttons (onLeftClick)="navigateBack()"></app-page-navigator-buttons>
+  <app-page-navigator-buttons (onRightClick)="continueWithData()" (onLeftClick)="navigateBack()"></app-page-navigator-buttons>
 </div>
 

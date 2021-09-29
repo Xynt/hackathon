@@ -1,1 +1,10 @@
-<p>result works!</p>
+<div>
+  <div class="team-overview" *ngFor="let team of teams; let i = index" [@teamReveal]="getAnimationState(i)">
+    <div class="team-header">{{team.name}}</div>
+    <div class="team-avatars">
+      <div class="avatar" *ngFor="let name of getMembersOf(team)">
+        <img class="person-avatar" [src]="getImageFor(name)" [alt]="name">
+      </div>
+    </div>
+  </div>
+</div>

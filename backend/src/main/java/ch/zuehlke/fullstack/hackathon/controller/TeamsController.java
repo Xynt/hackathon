@@ -5,6 +5,7 @@ import com.zuehlke.hackathon.peoplefinder.api.TeamsApi;
 import com.zuehlke.hackathon.peoplefinder.model.Team;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,6 +18,7 @@ public class TeamsController implements TeamsApi {
         this.teamsService = teamsService;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Override
     public ResponseEntity<List<Team>> calculateTeams(@Valid Team team, @Valid Integer dimension) {
         List<Team> teams = teamsService.calculateTeams(team, dimension);

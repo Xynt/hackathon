@@ -8,6 +8,8 @@ import {Person} from "../../../peoplefinder-api/model/person";
 import {Skill} from "../../../peoplefinder-api/model/skill";
 import {map, startWith} from "rxjs/operators";
 import {MatTable} from "@angular/material/table";
+import {PeopleServiceApi} from "../../../peoplefinder-api/api/people.service";
+import {TeamSetupService} from "../service/team-setup.service";
 import {PersonWithProficiency} from "../model/person-with-proficiency"
 
 @Component({
@@ -16,66 +18,40 @@ import {PersonWithProficiency} from "../model/person-with-proficiency"
   styleUrls: ['./persons.component.scss']
 })
 export class PersonsComponent implements OnInit {
+  selectedPeople: Person[] = [];
+  selectedSkills: Skill[] = [];
 
-  persons: Person[] = [];
+  selectablePeople: Person[] = [];
+
   displayedColumns: string[] = ["code", "firstname", "lastname"];
-
   filteredSuggestions!: Observable<Person[]>;
-  allPersons: Person[] = [
-    {
-      code: "stde",
-      firstName: "Stefan",
-      lastName: "Derungs"
-    },
-    {
-      code: "xaro",
-      firstName: "Xabier",
-      lastName: "Rodriguez"
-    },
-    {
-      code: "lybo",
-      firstName: "Lyndsey",
-      lastName: "Bonelli"
-    },
-    {
-      code: "davo",
-      firstName: "Davide",
-      lastName: "Vanoni"
-    },
-    {
-      code: "anko",
-      firstName: "Andres",
-      lastName: "Konrad"
-    },
-  ]
 
-  notExistsValidator: ValidatorFn = notExistsValidator(this.persons.map(person => person.code));
-
-  personControl: FormControl = new FormControl("", [
-    Validators.required,
-    existsValidator(this.allPersons.map(person => person.code)),
-    this.notExistsValidator
-  ]);
-  skills: Skill[] = [];
+  notExistsValidator: ValidatorFn = notExistsValidator(this.selectedPeople.map(person => person.code));
+  personControl: FormControl = new FormControl("", []);
 
   tableEntries: PersonWithProficiency[] = [];
 
   @ViewChild(MatTable) table!: MatTable<PersonWithProficiency>;
 
-  constructor(private router: Router) {
-    try {
-      this.skills = router.getCurrentNavigation()!.extras.state!.selectedSkills;
-    } catch (e) {
-      this.router.navigate(["/skills"]);
-    }
-
-    try {
-      this.persons = router.getCurrentNavigation()!.extras.state!.selectedPersons;
-    } catch (e) {
-    }
+  constructor(private router: Router, private peopleServiceApi: PeopleServiceApi, private teamSetupService: TeamSetupService) {
   }
 
   ngOnInit(): void {
+    this.selectedSkills = [...this.teamSetupService.skills];
+    if (!this.selectedSkills) {
+      this.router.navigate(["/skills"]);
+    }
+    this.selectedPeople = [...this.teamSetupService.people];
+
+    this.peopleServiceApi.getPeople().subscribe(people => {
+      this.selectablePeople = people;
+      this.personControl.addValidators([
+        Validators.required,
+        existsValidator(this.selectablePeople.map(person => person.code)),
+        this.notExistsValidator
+      ])
+    })
+
     this.filteredSuggestions = this.personControl.valueChanges
     .pipe(
       startWith(''),
@@ -83,47 +59,49 @@ export class PersonsComponent implements OnInit {
     );
 
 
-    this.persons.forEach(person => this.tableEntries.push(this.personToPersonWithProficiency(person)));
-    this.skills.forEach(skill => this.displayedColumns.push(skill.name));
+    this.selectedPeople.forEach(person => this.tableEntries.push(this.personToPersonWithProficiency(person)));
+    this.selectedSkills.forEach(skill => this.displayedColumns.push(skill.name));
   }
 
   addPerson(): void {
     if (this.personControl.valid) {
-      this.persons.push(this.allPersons.find(person => person.code == this.personControl.value)!);
-      this.tableEntries.push(this.personToPersonWithProficiency(this.allPersons.find(person => person.code == this.personControl.value)!))
+      this.selectedPeople.push(this.selectablePeople.find(person => person.code == this.personControl.value)!);
+      this.tableEntries.push(this.personToPersonWithProficiency(this.selectablePeople.find(person => person.code == this.personControl.value)!))
       this.resetExistsValidator()
       this.table.renderRows();
-
       this.personControl.reset();
-
-      console.log(this.tableEntries[0].proficiencies.get(this.skills[0]));
     }
   }
 
   personToPersonWithProficiency(person: Person): PersonWithProficiency {
     return new PersonWithProficiency(
       person,
-      new Map(this.skills.map(skill => [skill, 0]))
+      new Map(this.selectedSkills.map(skill => [skill, 0]))
     );
   }
 
   resetExistsValidator(): void {
     this.personControl.removeValidators(this.notExistsValidator)
-    this.notExistsValidator = notExistsValidator(this.persons.map(person => person.code));
+    this.notExistsValidator = notExistsValidator(this.selectedPeople.map(person => person.code));
     this.personControl.addValidators(this.notExistsValidator);
   }
 
   navigateBack(): void {
-    this.router.navigate(["skills"], {state: {selectedSkills: this.skills, selectedPersons: this.persons}})
+    this.router.navigate(["skills"])
+  }
+
+  continueWithData(): void {
+    this.teamSetupService.people = this.selectedPeople;
+    this.router.navigate(["config"])
   }
 
   getAccordingProficiencyValue(p: PersonWithProficiency, skillName: string): number {
-    let skill: Skill = this.skills.find(s => s.name == skillName)!;
+    let skill: Skill = this.selectedSkills.find(s => s.name == skillName)!;
     return p.proficiencies.get(skill)!;
   }
 
   editedFor(p: PersonWithProficiency, skillName: string, value: number) {
-    let skill: Skill = this.skills.find(s => s.name == skillName)!;
+    let skill: Skill = this.selectedSkills.find(s => s.name == skillName)!;
     this.tableEntries.find(entry => entry.person.code == p.person.code)!.proficiencies.set(skill, value);
   }
 
@@ -134,7 +112,7 @@ export class PersonsComponent implements OnInit {
 
     const filterValue = value.toLowerCase();
 
-    let existingValuesRemovedSuggestions = this.allPersons.filter(option => !this.persons.map(person => person.code).includes(option.code))
+    let existingValuesRemovedSuggestions = this.selectablePeople.filter(option => !this.selectedPeople.map(person => person.code).includes(option.code))
     let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => {
       let includesCode = option.code.toLowerCase().includes(filterValue);
       let includesName = (option.firstName.toLowerCase() + " " + option.lastName.toLowerCase()).includes(filterValue);

@@ -18,7 +18,7 @@ public class SkillsService {
     }
 
     public List<Skill> getSkills() {
-        List<InsightSkill> skills = insightSkillsApi.getSkills().getItems();
+        List<InsightSkill> skills = insightSkillsApi.getInsightSkills().getItems();
 
         return skills.stream()
                 .map(is -> new Skill().name(is.getName()))
