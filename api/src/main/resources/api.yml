@@ -66,6 +66,7 @@ paths:
           name: dimension
           example: 3
           schema:
+            minimum: 1
             type: integer
           description: The number of members for the team
       requestBody:

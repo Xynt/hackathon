@@ -17,7 +17,7 @@ public class TeamsServiceTest {
         Person person1 = new Person().firstName("Lyndsey").lastName("Bonelli").code("lybo");
         Person person2 = new Person().firstName("Xabier").lastName("Rodriguez").code("xaro");
         Person person3 = new Person().firstName("Davide").lastName("Vanoni").code("dava");
-        Person person4 = new Person().firstName("Stefan").lastName("Boesch").code("stbo");
+        Person person4 = new Person().firstName("Stefan").lastName("Boesch").code("steb");
         Person person5 = new Person().firstName("Georg").lastName("Mohr").code("gemo");
         Person person6 = new Person().firstName("Gezim").lastName("Zeneli").code("geze");
 
