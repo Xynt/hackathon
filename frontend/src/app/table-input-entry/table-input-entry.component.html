@@ -1,0 +1,3 @@
+<input [formControl]="control" matInput class="table-inline-input" type="number"
+       [valueAsNumber]="value"
+       (keyup)="changeEmitter.emit(control.value)">

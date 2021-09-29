@@ -19,6 +19,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ExistsDirective } from './service/directive/exists.directive';
 import { NotExistsDirective } from './service/directive/not-exists.directive';
 import { PageNavigatorButtonsComponent } from './page-navigator-buttons/page-navigator-buttons.component';
+import { TableInputEntryComponent } from './table-input-entry/table-input-entry.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { PageNavigatorButtonsComponent } from './page-navigator-buttons/page-nav
     ResultComponent,
     ExistsDirective,
     NotExistsDirective,
-    PageNavigatorButtonsComponent
+    PageNavigatorButtonsComponent,
+    TableInputEntryComponent
   ],
   imports: [
     BrowserModule,

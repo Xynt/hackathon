@@ -122,6 +122,11 @@ export class PersonsComponent implements OnInit {
     return p.proficiencies.get(skill)!;
   }
 
+  editedFor(p: PersonWithProficiency, skillName: string, value: number) {
+    let skill: Skill = this.skills.find(s => s.name == skillName)!;
+    this.tableEntries.find(entry => entry.person.code == p.person.code)!.proficiencies.set(skill, value);
+  }
+
   _filter(value: string): Person[] {
     if (!value) {
       value = "";
