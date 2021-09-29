@@ -5,6 +5,6 @@
 </div>
 
 
-<div class="container">
-  <router-outlet></router-outlet>
+<div [@routeAnimations]="prepareRoute(outlet)" class="container">
+  <router-outlet #outlet="outlet"></router-outlet>
 </div>

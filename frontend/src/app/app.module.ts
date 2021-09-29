@@ -47,7 +47,8 @@ import {TableInputEntryComponent} from './table-input-entry/table-input-entry.co
     MatToolbarModule,
     FormsModule,
     MatAutocompleteModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
