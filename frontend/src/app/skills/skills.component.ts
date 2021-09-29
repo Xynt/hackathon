@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {Skill} from "../../../peoplefinder-api/model/skill";
 import {Person} from "../../../peoplefinder-api/model/person";
 import {SkillsServiceApi} from "../../../peoplefinder-api/api/skills.service";
+import {TeamSetupService} from "../service/team-setup.service";
 
 @Component({
   selector: 'app-skills',
@@ -16,12 +17,14 @@ import {SkillsServiceApi} from "../../../peoplefinder-api/api/skills.service";
   styleUrls: ['./skills.component.scss']
 })
 export class SkillsComponent implements OnInit {
-  persons: Person[] = []
-  skills: Skill[] = [];
-  displayedColumns: string[] = ["name"];
-  allSkills: Skill[] = [];
+  selectedPersons: Person[] = []
+  selectedSkills: Skill[] = [];
 
-  notExistsValidator: ValidatorFn = notExistsValidator(this.skills.map(skill => skill.name));
+  selectableSkills: Skill[] = [];
+
+  displayedColumns: string[] = ["name"];
+
+  notExistsValidator: ValidatorFn = notExistsValidator(this.selectedSkills.map(skill => skill.name));
 
   skillControl: FormControl = new FormControl("", []);
 
@@ -29,20 +32,18 @@ export class SkillsComponent implements OnInit {
 
   @ViewChild(MatTable) table!: MatTable<Skill>;
 
-  constructor(private router: Router, private skillsServiceApi: SkillsServiceApi) {
-    try {
-      this.skills = router.getCurrentNavigation()!.extras.state!.selectedSkills;
-      this.persons = router.getCurrentNavigation()!.extras.state!.selectedPersons;
-    } catch (e) {
-    }
+  constructor(private router: Router, private skillsServiceApi: SkillsServiceApi, private teamSetupService: TeamSetupService) {
   }
 
   ngOnInit(): void {
+    this.selectedSkills = [...this.teamSetupService.skills];
+    this.selectedPersons = [...this.teamSetupService.people];
+
     this.skillsServiceApi.getSkills().subscribe(allSkills => {
-      this.allSkills = allSkills;
+      this.selectableSkills = allSkills;
       this.skillControl.addValidators([
         Validators.required,
-        existsValidator(this.allSkills.map(skill => skill.name)),
+        existsValidator(this.selectableSkills.map(skill => skill.name)),
         this.notExistsValidator
       ])
     });
@@ -55,7 +56,7 @@ export class SkillsComponent implements OnInit {
 
   addSkill(): void {
     if (this.skillControl.valid) {
-      this.skills.push({name: this.skillControl.value});
+      this.selectedSkills.push({name: this.skillControl.value});
       this.skillControl.setValue("");
       this.resetExistsValidator()
       this.table.renderRows();
@@ -65,12 +66,13 @@ export class SkillsComponent implements OnInit {
 
   resetExistsValidator(): void {
     this.skillControl.removeValidators(this.notExistsValidator)
-    this.notExistsValidator = notExistsValidator(this.skills.map(skill => skill.name));
+    this.notExistsValidator = notExistsValidator(this.selectedSkills.map(skill => skill.name));
     this.skillControl.addValidators(this.notExistsValidator);
   }
 
   continueWithData(): void {
-    this.router.navigate(["persons"], {state: {selectedSkills: this.skills, selectedPersons: this.persons}})
+    this.teamSetupService.skills = this.selectedSkills;
+    this.router.navigate(["persons"])
   }
 
   _filter(value: string): Skill[] {
@@ -80,7 +82,7 @@ export class SkillsComponent implements OnInit {
 
     const filterValue = value.toLowerCase();
 
-    let existingValuesRemovedSuggestions = this.allSkills.filter(option => !this.skills.map(skill => skill.name).includes(option.name))
+    let existingValuesRemovedSuggestions = this.selectableSkills.filter(option => !this.selectedSkills.map(skill => skill.name).includes(option.name))
     let searchFilteredSuggestions = existingValuesRemovedSuggestions.filter(option => option.name.toLowerCase().includes(filterValue));
     return searchFilteredSuggestions.splice(0, 5);
   }
