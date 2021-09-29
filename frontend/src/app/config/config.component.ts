@@ -59,6 +59,10 @@ export class ConfigComponent implements OnInit {
     return initProficiencies;
   }
 
+  navigateBack(): void {
+    this.router.navigate(["persons"]);
+  }
+
   submit(): void {
     this.teamSetupService.config = {teamDimension: this.teamDimension};
     this.teamSetupService.submit().subscribe(teams => {
