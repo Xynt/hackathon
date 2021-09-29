@@ -27,7 +27,7 @@ public class InsightClientConfiguration {
             String password = properties.getProperty("password");
             return new InsightLogin(username, password);
         } catch (Exception e) {
-            // TODO Maybe define a better exception?
+            // TODO (ZUHA-31): Maybe define a better exception?
             throw new RuntimeException("User login could not be loaded.");
         }
     }
